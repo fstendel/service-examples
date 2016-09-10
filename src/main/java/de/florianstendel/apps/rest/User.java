@@ -6,19 +6,11 @@ package de.florianstendel.apps.rest;
 public class User {
 
 
-    private String id;
     private String login;
     private String firstName;
     private String lastName;
 
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getLogin() {
         return login;
@@ -51,7 +43,6 @@ public class User {
 
         User user = (User) o;
 
-        if (getId() != null ? !getId().equals(user.getId()) : user.getId() != null) return false;
         if (getLogin() != null ? !getLogin().equals(user.getLogin()) : user.getLogin() != null) return false;
         if (getFirstName() != null ? !getFirstName().equals(user.getFirstName()) : user.getFirstName() != null)
             return false;
@@ -61,8 +52,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
+        int result = getLogin() != null ? getLogin().hashCode() : 0;
         result = 31 * result + (getFirstName() != null ? getFirstName().hashCode() : 0);
         result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
         return result;
