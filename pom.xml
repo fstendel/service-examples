@@ -4,7 +4,7 @@
 
     <groupId>de.florianstendel.apps</groupId>
     <artifactId>ServiceExamples</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>war</packaging>
 
     <name>JAX-WS/ JAX-RS webervice examples</name>
@@ -74,7 +74,8 @@
         <developerConnection>scm:git:https://github.com/fstendel/service-examples.git</developerConnection>
         <!-- Location where Source-Code can be browsed -->
         <url>https://github.com/fstendel/service-examples.git</url>
-    </scm>
+      <tag>ServiceExamples-1.0</tag>
+  </scm>
 
     <distributionManagement>
         <repository>
