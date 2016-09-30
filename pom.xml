@@ -86,7 +86,7 @@
         <repository>
             <id>File Repository</id>
             <name>Release Repository</name>
-            <url>file:D:\Software Repositories</url>
+            <url>file:E:\Software Repositories</url>
         </repository>
     </distributionManagement>
 </project>
