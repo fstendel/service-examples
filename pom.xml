@@ -76,11 +76,17 @@
         <url>https://github.com/fstendel/service-examples.git</url>
     </scm>
 
-    <distributionManagement>
+    <!--distributionManagement>
         <repository>
             <id>releases</id>
             <url>https://nexus.florianstendel.de/nexus/content/repositories/releases</url>
         </repository>
+    </distributionManagement-->
+    <distributionManagement>
+        <repository>
+            <id>File Repository</id>
+            <name>Release Repository</name>
+            <url>file:D:\Software Repositories</url>
+        </repository>
     </distributionManagement>
-
 </project>
