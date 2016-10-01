@@ -31,7 +31,6 @@
                 <version>3.0.0</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <warName>ServiceExamples</warName>
                 </configuration>
             </plugin>
             <plugin>
@@ -74,20 +73,13 @@
         <developerConnection>scm:git:https://github.com/fstendel/service-examples.git</developerConnection>
         <!-- Location where Source-Code can be browsed -->
         <url>https://github.com/fstendel/service-examples.git</url>
-      <tag>HEAD</tag>
+        <tag>HEAD</tag>
   </scm>
 
-    <!--distributionManagement>
+    <distributionManagement>
         <repository>
             <id>releases</id>
             <url>https://nexus.florianstendel.de/nexus/content/repositories/releases</url>
-        </repository>
-    </distributionManagement-->
-    <distributionManagement>
-        <repository>
-            <id>File Repository</id>
-            <name>Release Repository</name>
-            <url>file:E:\Software Repositories</url>
         </repository>
     </distributionManagement>
 </project>
