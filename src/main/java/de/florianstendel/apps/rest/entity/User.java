@@ -1,7 +1,10 @@
-package de.florianstendel.apps.rest;
+package de.florianstendel.apps.rest.entity;
 
 /**
- * Created by Flori on 03.09.2016.
+ * Created by Florian Stendel on 03.09.2016.
+ *
+ * Entity for specifying user data.
+ *
  */
 public class User {
 
