@@ -1,21 +1,31 @@
 package de.florianstendel.apps.rest;
 
+import de.florianstendel.apps.rest.entity.Error;
 import de.florianstendel.apps.rest.entity.User;
+import de.florianstendel.apps.rest.service.UserService;
 
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.security.KeyStore;
+import javax.ws.rs.core.Response;
 import java.util.*;
 
 /**
- * Created by Florian Stendel on 03.09.2016.
+ * Class implementing an user resource of a RESTful API.
+ *
+ * @author Florian Stendel
  */
 @Path("/users")
+@RequestScoped
 public class UserResource {
 
-    private static Map<String, User> users = new HashMap<String,User>();
+    @Inject
+    private UserService userService;
+
+    private static Map<String, User> users = new HashMap<>();
 
 
     /**
@@ -27,8 +37,8 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> getUsers(){
 
-
-        return new ArrayList<User>(users.values());
+        return userService.getUsers();
+       // return new ArrayList<>(users.values());
     }
 
 
@@ -59,20 +69,23 @@ public class UserResource {
             return user;
 
         }catch(IllegalArgumentException | UnsupportedOperationException | ClassCastException e) {
-            throw new BadRequestException();
+            throw new BadRequestException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity(new Error("EX00002","Bad request arguments.","Bad request arguments."))
+                            .build());
         }
     }
 
     /**
      * Creates a user resource choosing an appropiate resource identifier.
      *
-     * @param user
+     * @param user Data used to create user.
      * @return The user created/replaced.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User addUser(final User user){
+    public User addUser(final User user, @Context HttpServletResponse httpServletResponse){
 
         try {
             Set<Map.Entry<String,User>> userEntrySet = users.entrySet();
@@ -83,24 +96,27 @@ public class UserResource {
                 if(entry.getValue() != null && entry.getValue().equals(user)){
                     users.put((String)entry.getKey(), (User)entry.getValue());
                     isReplaced = true;
+                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                     break;
                 }
             }
 
-            if(isReplaced == false){
+            if(!isReplaced){
                 String nextPosition = String.valueOf(users.size() + 1);
                 users.put(nextPosition,user);
+                httpServletResponse.setStatus(HttpServletResponse.SC_CREATED);
             }
 
             return user;
 
         }catch(IllegalArgumentException | UnsupportedOperationException | ClassCastException e) {
-            throw new BadRequestException();
+            throw new BadRequestException(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity(new Error("EX00002","Bad request arguments.","Bad request arguments."))
+                            .build());
         }
 
     }
-
-
 
     /**
      * Deletes the resource at the location specified by {id}.
@@ -120,6 +136,9 @@ public class UserResource {
         if(removedUser != null)
             return removedUser;
 
-        throw new NotFoundException();
+        throw new NotFoundException(
+                Response.status(Response.Status.NOT_FOUND)
+                        .entity(new Error("EX00002","Entity not found.","Entity not found."))
+                        .build());
     }
 }
