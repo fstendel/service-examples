@@ -1,6 +1,6 @@
 # Services Sample Application
 
-Actually, this project is used for practicing and for providing examples for different (web) service technologies.
+Project used for practicing and demonstratig the usage different (web) service technologies in JaveEE.
 
 ## Prerequisites 
 * JavaEE 7 compliant application server/runtime supporting:
