@@ -1,18 +1,18 @@
 package de.florianstendel.apps.rest.entity;
 
 /**
- * Created by Florian Stendel on 01.10.2016.
- *
  * Entity for specifing fault conditions.
+ *
+ * @author Florian Stendel
  */
-public class Error {
+public class Fault {
 
     private String errorCode;
     private String message;
     private String description;
 
 
-    public Error(final String errorCode, final String message, final String description){
+    public Fault(final String errorCode, final String message, final String description){
         this.errorCode = errorCode;
         this.message = message;
         this.description = description;

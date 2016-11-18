@@ -1,16 +1,23 @@
 package de.florianstendel.apps.rest.entity;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 /**
- * Created by Florian Stendel on 03.09.2016.
- *
  * Entity for specifying user data.
  *
+ * @author Florian Stendel
  */
 public class User {
 
 
+    @NotNull
     private String login;
+
+    @NotNull(message = "Firstname must not be null.")
     private String firstName;
+
+    @NotNull
     private String lastName;
 
 

@@ -1,10 +1,9 @@
 package de.florianstendel.apps.rest;
 
-import de.florianstendel.apps.rest.entity.Error;
+import de.florianstendel.apps.rest.entity.Fault;
 import de.florianstendel.apps.rest.entity.User;
 import de.florianstendel.apps.rest.service.UserService;
 
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
@@ -19,14 +18,10 @@ import java.util.*;
  * @author Florian Stendel
  */
 @Path("/users")
-@RequestScoped
 public class UserResource {
 
     @Inject
     private UserService userService;
-
-    private static Map<String, User> users = new HashMap<>();
-
 
     /**
      * Gets a list of currently stored users.
@@ -37,8 +32,14 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> getUsers(){
 
-        return userService.getUsers();
-       // return new ArrayList<>(users.values());
+        try{
+            return userService.listUsers();
+        }catch(Throwable e){
+            throw new ServerErrorException(
+                    Response.serverError()
+                            .entity(new Fault("EX00001","Internal Server Error.","Internal Server Error."))
+                            .build());
+        }
     }
 
 
@@ -58,20 +59,18 @@ public class UserResource {
     public User addUser(@PathParam("id")final String id, final User user, @Context HttpServletResponse httpServletResponse){
 
         try {
-            User previousExistingUser = users.put(id, user);
+            boolean isUserReplaced = userService.createReplaceUser(id, user);
 
-            if(previousExistingUser !=null){
+            if (isUserReplaced) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-            }else {
+            } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_CREATED);
             }
-
             return user;
-
-        }catch(IllegalArgumentException | UnsupportedOperationException | ClassCastException e) {
-            throw new BadRequestException(
-                    Response.status(Response.Status.BAD_REQUEST)
-                            .entity(new Error("EX00002","Bad request arguments.","Bad request arguments."))
+        }catch(Throwable e){
+            throw new ServerErrorException(
+                    Response.serverError()
+                            .entity(new Fault("EX00001","Internal Server Error.","Internal Server Error."))
                             .build());
         }
     }
@@ -88,35 +87,22 @@ public class UserResource {
     public User addUser(final User user, @Context HttpServletResponse httpServletResponse){
 
         try {
-            Set<Map.Entry<String,User>> userEntrySet = users.entrySet();
-            boolean isReplaced = false;
+            boolean isUserReplaced = userService.createReplaceUser(user);
 
-            for(Map.Entry entry : userEntrySet){
-
-                if(entry.getValue() != null && entry.getValue().equals(user)){
-                    users.put((String)entry.getKey(), (User)entry.getValue());
-                    isReplaced = true;
-                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-                    break;
-                }
-            }
-
-            if(!isReplaced){
-                String nextPosition = String.valueOf(users.size() + 1);
-                users.put(nextPosition,user);
+            if (isUserReplaced) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_CREATED);
             }
 
             return user;
-
-        }catch(IllegalArgumentException | UnsupportedOperationException | ClassCastException e) {
-            throw new BadRequestException(
-                    Response.status(Response.Status.BAD_REQUEST)
-                            .entity(new Error("EX00002","Bad request arguments.","Bad request arguments."))
+        }catch(Throwable e){
+            throw new ServerErrorException(
+                    Response.serverError()
+                            .entity(new Fault("EX00001","Internal Server Error.","Internal Server Error."))
                             .build());
         }
-
-    }
+}
 
     /**
      * Deletes the resource at the location specified by {id}.
@@ -131,14 +117,22 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public User removeUser(@PathParam("id") final String id) throws NotFoundException{
 
-        User removedUser = users.remove(id);
+        try {
+            User removedUser = userService.deleteUser(id);
 
-        if(removedUser != null)
-            return removedUser;
-
-        throw new NotFoundException(
-                Response.status(Response.Status.NOT_FOUND)
-                        .entity(new Error("EX00002","Entity not found.","Entity not found."))
+            if (removedUser != null) {
+                return removedUser;
+            } else {
+                throw new NotFoundException(
+                        Response.status(Response.Status.NOT_FOUND)
+                                .entity(new Fault("EX00002", "Entity not found.", "Entity not found."))
+                                .build());
+            }
+        }catch(Throwable e){
+            throw new ServerErrorException(
+                Response.serverError()
+                        .entity(new Fault("EX00001","Internal Server Error.","Internal Server Error."))
                         .build());
+        }
     }
 }

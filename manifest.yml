@@ -1,8 +1,0 @@
-applications:
-- path: target/ServiceExamples-1.2-SNAPSHOT.war
-  memory: 512M
-  instances: 1
-  domain: eu-gb.mybluemix.net
-  name: Service-Examples
-  host: service-examples
-  disk_quota: 1024M
