@@ -67,6 +67,7 @@ public class UserResource {
                 httpServletResponse.setStatus(HttpServletResponse.SC_CREATED);
             }
             return user;
+
         }catch(Throwable e){
             throw new ServerErrorException(
                     Response.serverError()
@@ -94,7 +95,6 @@ public class UserResource {
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_CREATED);
             }
-
             return user;
         }catch(Throwable e){
             throw new ServerErrorException(

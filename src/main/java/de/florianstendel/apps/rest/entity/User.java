@@ -1,8 +1,5 @@
 package de.florianstendel.apps.rest.entity;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 /**
  * Entity for specifying user data.
  *
@@ -10,14 +7,10 @@ import javax.validation.constraints.Pattern;
  */
 public class User {
 
-
-    @NotNull
     private String login;
 
-    @NotNull(message = "Firstname must not be null.")
     private String firstName;
 
-    @NotNull
     private String lastName;
 
 
