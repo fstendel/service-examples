@@ -164,7 +164,7 @@
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
-            <url>https://nexus.florianstendel.de/repository/maven-releases/</url>
+            <url>https://artifacts.florianstendel.de/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 </project>
