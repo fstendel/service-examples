@@ -13,11 +13,11 @@ import java.util.*;
 public class UserService {
 
 
-    private static Map<String, User> users = new HashMap<>();
+    private static Map<String, User> users = new HashMap<String, User>();
 
     public List<User> listUsers(){
 
-        return new ArrayList<>(users.values());
+        return new ArrayList(users.values());
     }
 
 
