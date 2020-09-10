@@ -12,7 +12,10 @@ import javax.naming.NamingException;
  * Created by Florian Stendel on 02.09.2016.
  */
 @WebService(endpointInterface = "com.examples.wsdl.helloservice.HelloPortType",
-               targetNamespace = "http://www.examples.com/wsdl/HelloService.wsdl")
+            targetNamespace = "http://www.examples.com/wsdl/HelloService.wsdl",
+            wsdlLocation = "WEB-INF/wsdl/Sample.wsdl",
+            portName = "Hello_Port",
+            serviceName = "Hello_Service")
 public class EchoService implements HelloPortType {
 
     @Override
